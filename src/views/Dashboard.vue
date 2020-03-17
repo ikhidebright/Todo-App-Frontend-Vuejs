@@ -1,0 +1,339 @@
+<template>
+  <div class="home">
+    <div id="nav">
+       <div class="container">
+      <div>
+  <b-navbar toggleable="lg" type="dark" variant="">
+    <b-navbar-brand to="/">TIIDEdo</b-navbar-brand>
+
+    <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+
+    <b-collapse id="nav-collapse" is-nav>
+
+      <!-- Right aligned nav items -->
+      <b-navbar-nav class="ml-auto">
+        <!-- <b-nav-form>
+          <b-form-input size="sm" class="mr-sm-2" placeholder="Search"></b-form-input>
+          <b-button size="sm" class="my-2 my-sm-0" type="submit">Search</b-button>
+        </b-nav-form> -->
+
+        <b-navbar-nav>
+        <b-nav-item to="login" v-if="!$store.state.isUserLoggedIn">Get started</b-nav-item>
+      </b-navbar-nav>
+
+        <b-nav-item-dropdown right v-if="$store.state.isUserLoggedIn">
+          <!-- Using 'button-content' slot -->
+          <template v-slot:button-content v-if="$store.state.isUserLoggedIn">
+            <em v-if="$store.state.isUserLoggedIn">{{ user }}</em>
+          </template>
+          <b-dropdown-item to="/dashboard" v-if="$store.state.isUserLoggedIn" disabled>Dashboard</b-dropdown-item>
+          <b-dropdown-item to="/profile" v-if="$store.state.isUserLoggedIn">Edit Profile</b-dropdown-item>
+          <b-dropdown-item to="/password" v-if="$store.state.isUserLoggedIn">Change Password</b-dropdown-item>
+          <b-dropdown-item v-if="$store.state.isUserLoggedIn" @click="signout">Sign Out</b-dropdown-item>
+        </b-nav-item-dropdown>
+      </b-navbar-nav>
+    </b-collapse>
+  </b-navbar>
+</div>
+</div>
+    </div>
+    <div class="container">
+      <div class="main">
+     <h5>Today</h5>
+     <div v-bind:key="todo.id" v-for="todo in todos">
+       <Todoitem v-bind:todo="todo" v-on:del-task="delTodo" v-on:mark="markTodo"/>
+     </div>
+     <i class="fas fa-clipboard-list" v-if="this.todos.length === 0"></i>
+     <div>
+  <b-modal id="modal-center" centered title="Add Todo" hide-header-close= true cancel-variant="danger" ok-title="Add">
+     <template v-slot:modal-footer="{ ok, cancel }">
+      <!-- Emulate built in modal footer ok and cancel button actions -->
+      <div class="mb-1">
+     <b-button @click="showMsgBoxTwo" variant="" size="sm" class="sub2">Add</b-button>
+    </div>
+      <!-- <b-button size="sm" variant="" class="sub" @click="addtodo">
+        Add
+      </b-button> -->
+      <b-button size="sm" variant="danger" @click="cancel()">
+        Cancel
+      </b-button>
+    </template>
+    <div>
+  <b-form-textarea
+    id="textarea-no-resize"
+    v-model="task"
+    placeholder="Enter a Task"
+    rows="4"
+    no-resize
+  ></b-form-textarea>
+    <b-row class="my-1" v-for="type in types" :key="type">
+      <b-col sm="6">
+        <b-form-input :id="`type-${type}`" :type="type" v-model="time"></b-form-input>
+      </b-col>
+    </b-row>
+</div>
+  </b-modal>
+</div>
+  <button @click="dateNow" v-b-modal.modal-center class="add">+</button>
+      </div>
+      </div>
+  </div>
+</template>
+
+<script>
+import axios from 'axios'
+import Todoitem from '../components/Todoitem.vue'
+
+export default {
+  name: 'Dashboard',
+  components: {
+    Todoitem
+  },
+  data () {
+    return {
+      types: [
+        // 'date',
+        'time'
+      ],
+      user: this.$store.state.user.username,
+      todos: [],
+      task: '',
+      alert: '',
+      time: '',
+      user_id: this.$store.state.user.id
+    }
+  },
+  methods: {
+    dateNow () {
+      const d = new Date()
+      const h = d.getHours()
+      const m = d.getMinutes()
+      this.time = h + ':' + m
+    },
+    changeRout () {
+      this.$router.push('/')
+    },
+    signout () {
+      this.$store.dispatch('setToken', null)
+      this.$store.dispatch('setUser', null)
+      this.changeRout()
+    },
+    delTodo (id) {
+      const result = confirm('Sure you want to delete?')
+      if (result) {
+        axios.get(`http://localhost:8000/delete/${id}`, {
+          id: id
+        }).then((res) => {
+          this.load()
+        })
+      }
+    },
+    markTodo (todo) {
+      axios.put(`http://localhost:8000/mark/${todo.id}`, {
+        completed: !todo.completed
+      }).then((res) => {
+        this.load()
+      })
+    },
+    load () {
+      axios.get(`http://localhost:8000/todos/${this.user_id}`, {
+        user_id: this.user_id
+      }).then((res) => {
+        this.todos = res.data.result
+      })
+    },
+    sendTodo () {
+      axios.post('http://localhost:8000/todo', {
+        task: this.task,
+        user_id: this.user_id,
+        time: this.time
+      }).then((res) => {
+        this.alert = res.data.message
+        this.load()
+      })
+      this.task = ''
+      this.dateNow()
+    },
+    showMsgBoxTwo () {
+      this.sendTodo()
+      this.boxTwo = ''
+      this.$bvModal.msgBoxOk(this.alert, {
+        title: 'Confirmation',
+        size: 'sm',
+        buttonSize: 'sm',
+        okVariant: 'primary',
+        class: '.sub2',
+        centered: true
+      })
+        .then(value => {
+          this.boxTwo = value
+          this.$bvModal.hide('modal-center')
+          // alert('hey')
+        })
+        .catch(err => {
+          throw err
+        })
+    }
+  },
+  created () {
+    this.dateNow()
+    axios.get(`http://localhost:8000/todos/${this.user_id}`, {
+      user_id: this.user_id
+    }).then((res) => {
+      this.todos = res.data.result
+    })
+  }
+}
+</script>
+
+<style scoped>
+b-dropdown-item:active {
+  background-color: red;
+}
+
+.sub {
+  background-color: #065566;
+  width: 50%;
+}
+
+.sub2 {
+  background-color: #065566;
+}
+
+.ok {
+  background-color: black;
+}
+
+h4 {
+  padding: 1vmin;
+}
+
+.fa-clipboard-list {
+  color: rgb(223, 223, 223);
+  font-size: 10vmin;
+  width: 100%;
+  margin: 0 auto;
+  margin-top: 26vh;
+  text-align: center;
+}
+
+.add {
+border: none;
+background-color: white;
+box-shadow: 0 3px 6px 0 rgba(0,0,0,.25);
+border-radius: 50%;
+font-weight: bold;
+color: #810909;
+font-size: 18px;
+font-family: Squada One;
+width: 60px;
+position: fixed;
+bottom: 0;
+right: 0;
+margin: 0 10vw 10vw 0;
+height: 60px;
+float: right;
+}
+
+.add:focus {
+  outline: none;
+}
+
+.add:hover {
+background-color: #e1ecee;
+}
+
+.main {
+width: 100%;
+height: 90vh;
+}
+
+#nav {
+  background-color: #065566;
+  height: 9vh;
+  color: white;
+  padding: 0%;
+  margin-bottom: 1%;
+}
+
+router-link {
+  color: white;
+}
+
+@media only screen and (min-width: 600px) {
+.sub {
+  background-color: #065566;
+  width: 50%;
+}
+
+.ok {
+  background-color: black;
+}
+
+h5 {
+  padding: 3vmin;
+}
+
+.fa-clipboard-list {
+  color: rgb(223, 223, 223);
+  font-size: 10vmin;
+  width: 100%;
+  margin: 0 auto;
+  margin-top: 26vh;
+  text-align: center;
+}
+
+.add {
+border: none;
+background-color: white;
+box-shadow: 0 3px 6px 0 rgba(0,0,0,.25);
+border-radius: 50%;
+font-weight: bold;
+color: #810909;
+font-size: 18px;
+width: 60px;
+position: fixed;
+bottom: 0;
+right: 0;
+margin: 0 30vw 6vw 0;
+height: 60px;
+float: right;
+}
+
+/* .add:focus {
+  outline: none;
+}
+
+.add:hover {
+background-color: #e1ecee;
+} */
+
+.main {
+width: 60%;
+margin: 0 auto;
+/* box-shadow: 0 0 6px gray; */
+height: 80vh;
+margin-top: 11vh;
+position: relative;
+bottom: 2vmin;
+/* border-top-left-radius: 5vmin;
+border-top-right-radius: 5vmin; */
+}
+
+#nav {
+  background-color: #065566;
+  height: 9vh;
+  color: white;
+  width: 100%;
+  padding: 0;
+  position: fixed;
+  top: 0;
+  z-index: 1;
+  margin-bottom: 2%;
+}
+
+router-link {
+  color: white;
+}
+}
+</style>
