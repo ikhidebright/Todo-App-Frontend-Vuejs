@@ -43,7 +43,7 @@ export default {
     register (e) {
       this.clicked = true
       setTimeout(() => {
-        axios.post('http://localhost:8000/register', {
+        axios.post('https://todo-app-backend-node.herokuapp.com/register', {
           username: this.username,
           email: this.email,
           password: this.password

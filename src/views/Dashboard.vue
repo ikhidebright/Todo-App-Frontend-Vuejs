@@ -121,7 +121,7 @@ export default {
     delTodo (id) {
       const result = confirm('Sure you want to delete?')
       if (result) {
-        axios.get(`http://localhost:8000/delete/${id}`, {
+        axios.get(`https://todo-app-backend-node.herokuapp.com/delete/${id}`, {
           id: id
         }).then((res) => {
           this.load()
@@ -129,21 +129,21 @@ export default {
       }
     },
     markTodo (todo) {
-      axios.put(`http://localhost:8000/mark/${todo.id}`, {
+      axios.put(`https://todo-app-backend-node.herokuapp.com/mark/${todo.id}`, {
         completed: !todo.completed
       }).then((res) => {
         this.load()
       })
     },
     load () {
-      axios.get(`http://localhost:8000/todos/${this.user_id}`, {
+      axios.get(`https://todo-app-backend-node.herokuapp.com/${this.user_id}`, {
         user_id: this.user_id
       }).then((res) => {
         this.todos = res.data.result
       })
     },
     sendTodo () {
-      axios.post('http://localhost:8000/todo', {
+      axios.post('https://todo-app-backend-node.herokuapp.com/todo', {
         task: this.task,
         user_id: this.user_id,
         time: this.time
@@ -177,7 +177,7 @@ export default {
   },
   created () {
     this.dateNow()
-    axios.get(`http://localhost:8000/todos/${this.user_id}`, {
+    axios.get(`https://todo-app-backend-node.herokuapp.com/todos/${this.user_id}`, {
       user_id: this.user_id
     }).then((res) => {
       this.todos = res.data.result
