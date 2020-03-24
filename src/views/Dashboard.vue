@@ -6,10 +6,6 @@
   <b-navbar toggleable="lg" type="dark" variant="">
     <b-navbar-brand to="/">TIIDEdo</b-navbar-brand>
 
-    <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
-
-    <b-collapse id="nav-collapse" is-nav>
-
       <!-- Right aligned nav items -->
       <b-navbar-nav class="ml-auto">
         <!-- <b-nav-form>
@@ -32,14 +28,13 @@
           <b-dropdown-item v-if="$store.state.isUserLoggedIn" @click="signout">Sign Out</b-dropdown-item>
         </b-nav-item-dropdown>
       </b-navbar-nav>
-    </b-collapse>
   </b-navbar>
 </div>
 </div>
     </div>
     <div class="container">
-      <div class="main">
-     <h5>Today</h5>
+      <div class="main mt-9">
+      <br>
      <div v-bind:key="todo.id" v-for="todo in todos">
        <Todoitem v-bind:todo="todo" v-on:del-task="delTodo" v-on:mark="markTodo"/>
      </div>
@@ -136,7 +131,7 @@ export default {
       })
     },
     load () {
-      axios.get(`https://todo-app-backend-node.herokuapp.com/${this.user_id}`, {
+      axios.get(`https://todo-app-backend-node.herokuapp.com/todos/${this.user_id}`, {
         user_id: this.user_id
       }).then((res) => {
         this.todos = res.data.result

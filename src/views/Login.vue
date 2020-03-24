@@ -94,6 +94,10 @@ $button-active-blue: #1669F2;
     height: 18px;
   }
 
+  .login h3 {
+  font-family: Fredoka One;
+  }
+
   h3 {
   font-family: Fredoka One;
   }
@@ -157,12 +161,16 @@ float: right;
   margin-top: 6%;
 }
 
+.login h3 {
+  font-family: Fredoka One;
+  }
+
 p {
   font-size: 1rem;
   font-family: Noto Sans SC;
 }
 
-h3 {
+.login h3 {
   font-family: Fredoka One;
   }
 }

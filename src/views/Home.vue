@@ -6,10 +6,6 @@
   <b-navbar toggleable="lg" type="dark" variant="">
     <b-navbar-brand to="/">TIIDEdo</b-navbar-brand>
 
-    <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
-
-    <b-collapse id="nav-collapse" is-nav>
-
       <!-- Right aligned nav items -->
       <b-navbar-nav class="ml-auto">
         <!-- <b-nav-form>
@@ -32,7 +28,6 @@
           <b-dropdown-item v-if="$store.state.isUserLoggedIn" @click="signout">Sign Out</b-dropdown-item>
         </b-nav-item-dropdown>
       </b-navbar-nav>
-    </b-collapse>
   </b-navbar>
 </div>
 </div>
@@ -166,7 +161,7 @@ body {
 }
 
 .hero h1 {
-  font-size: 4rem;
+  font-size: 3rem;
   margin-top: 4min;
   font-family: Righteous;
 }

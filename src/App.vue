@@ -11,6 +11,10 @@
   color: #065566;
 }
 
+.login h3 {
+  font-family: Fredoka One;
+  }
+
 .link:hover {
   text-decoration: none;
   color: red
