@@ -67,7 +67,7 @@ export default {
       confirmpassword: '',
       alert: '',
       show: 'hide',
-      user: this.$store.state.user.username,
+      user: this.$store.state.user[0].username,
       clicked: false
     }
   },
@@ -83,7 +83,7 @@ export default {
     update (e) {
       this.clicked = true
       setTimeout(() => {
-        axios.post(`https://todo-app-backend-node.herokuapp.com/updatep/${this.$store.state.user.id}`, {
+        axios.post(`https://todo-app-backend-node.herokuapp.com/updatep/${this.$store.state.user[0].id}`, {
           username: this.username,
           email: this.email,
           password: this.password

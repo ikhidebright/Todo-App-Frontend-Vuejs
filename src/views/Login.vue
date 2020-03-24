@@ -53,7 +53,7 @@ export default {
         password: this.password
       }).then((res) => {
         this.$store.dispatch('setToken', res.data.token)
-        this.$store.dispatch('setUser', res.data.result)
+        this.$store.dispatch('setUser', res.data.results)
         this.alert = res.data.message
       })
         .then((res) => {

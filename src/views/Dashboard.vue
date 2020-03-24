@@ -95,12 +95,12 @@ export default {
         // 'date',
         'time'
       ],
-      user: this.$store.state.user.username,
+      user: this.$store.state.user[0].username,
       todos: [],
       task: '',
       alert: '',
       time: '',
-      user_id: this.$store.state.user.id
+      user_id: this.$store.state.user[0].id
     }
   },
   methods: {

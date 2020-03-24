@@ -78,7 +78,7 @@ export default {
   },
   data () {
     return {
-      user: this.$store.state.user.username
+      user: this.$store.state.user[0].username
     }
   },
   methods: {
