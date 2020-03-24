@@ -13,7 +13,7 @@
      <template v-slot:modal-footer="{ ok, cancel }">
       <!-- Emulate built in modal footer ok and cancel button actions -->
       <div class="mb-1">
-     <b-button @click="showMsgBoxTwo" variant="" size="sm" class="sub2" :disabled='task.length<5'>Add</b-button>
+     <b-button @click="showMsgBoxTwo" variant="" size="sm" class="sub2">Add</b-button>
     </div>
       <!-- <b-button size="sm" variant="" class="sub" @click="addtodo">
         Add
@@ -101,16 +101,20 @@ export default {
       })
     },
     sendTodo () {
-      axios.post('https://todo-app-backend-node.herokuapp.com/todo', {
-        task: this.task,
-        user_id: this.user_id,
-        time: this.time
-      }).then((res) => {
-        this.alert = res.data.message
-        this.load()
-      })
-      this.task = ''
-      this.dateNow()
+      if (this.task.length < 5) {
+        alert('Task must be more than 5 letter words')
+      } else {
+        axios.post('https://todo-app-backend-node.herokuapp.com/todo', {
+          task: this.task,
+          user_id: this.user_id,
+          time: this.time
+        }).then((res) => {
+          this.alert = res.data.message
+          this.load()
+        })
+        this.task = ''
+        this.dateNow()
+      }
     },
     showMsgBoxTwo () {
       this.sendTodo()
