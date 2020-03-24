@@ -4,7 +4,7 @@
     <div id="nav">
        <div class="container">
       <div>
-  <b-navbar toggleable="lg" type="dark" variant="">
+  <b-navbar type="dark" variant="">
     <b-navbar-brand to="/">TIIDEdo</b-navbar-brand>
 
       <!-- Right aligned nav items -->
@@ -20,7 +20,7 @@
           </template>
           <b-dropdown-item to="/dashboard" v-if="$store.state.isUserLoggedIn">Dashboard</b-dropdown-item>
           <b-dropdown-item to="/profile" v-if="$store.state.isUserLoggedIn">Edit Profile</b-dropdown-item>
-          <b-dropdown-item to="/password" v-if="$store.state.isUserLoggedIn" disabled>Change Password</b-dropdown-item>
+          <b-dropdown-item to="/password" v-if="$store.state.isUserLoggedIn">Change Password</b-dropdown-item>
           <b-dropdown-item v-if="$store.state.isUserLoggedIn" @click="signout">Sign Out</b-dropdown-item>
         </b-nav-item-dropdown>
       </b-navbar-nav>
@@ -40,6 +40,16 @@ export default {
       user: this.$store.state.user[0].username,
       clicked: false
     }
+  },
+  methods: {
+    changeRout () {
+      this.$router.push('/')
+    },
+    signout () {
+      this.$store.dispatch('setToken', null)
+      this.$store.dispatch('setUser', null)
+      this.changeRout()
+    }
   }
 }
 </script>
@@ -58,7 +68,7 @@ export default {
 
 #nav {
   background-color: #065566;
-  height: 10vh;
+  height: auto;
   color: rgb(59, 43, 43);
   padding: 0%;
   margin-bottom: 1%;

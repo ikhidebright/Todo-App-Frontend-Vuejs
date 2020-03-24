@@ -1,39 +1,6 @@
 <template>
-<div>
   <div class="home">
-    <div id="nav">
-       <div class="container">
-      <div>
-  <b-navbar toggleable="lg" type="dark" variant="">
-    <b-navbar-brand to="/">TIIDEdo</b-navbar-brand>
-
-      <!-- Right aligned nav items -->
-      <b-navbar-nav class="ml-auto">
-        <!-- <b-nav-form>
-          <b-form-input size="sm" class="mr-sm-2" placeholder="Search"></b-form-input>
-          <b-button size="sm" class="my-2 my-sm-0" type="submit">Search</b-button>
-        </b-nav-form> -->
-
-        <b-navbar-nav>
-        <b-nav-item to="login" v-if="!$store.state.isUserLoggedIn">Get started</b-nav-item>
-      </b-navbar-nav>
-
-        <b-nav-item-dropdown right v-if="$store.state.isUserLoggedIn">
-          <!-- Using 'button-content' slot -->
-          <template v-slot:button-content v-if="$store.state.isUserLoggedIn">
-            <em v-if="$store.state.isUserLoggedIn">{{ user }}</em>
-          </template>
-          <b-dropdown-item to="/dashboard" v-if="$store.state.isUserLoggedIn">Dashboard</b-dropdown-item>
-          <b-dropdown-item to="/profile" v-if="$store.state.isUserLoggedIn" disabled>Edit Profile</b-dropdown-item>
-          <b-dropdown-item to="/password" v-if="$store.state.isUserLoggedIn">Change Password</b-dropdown-item>
-          <b-dropdown-item v-if="$store.state.isUserLoggedIn" @click="signout">Sign Out</b-dropdown-item>
-        </b-nav-item-dropdown>
-      </b-navbar-nav>
-  </b-navbar>
-</div>
-</div>
-    </div>
-    </div>
+    <Header />
 <div class="container">
   <div class="register">
     <br/>
@@ -55,8 +22,13 @@
 </template>
 <script>
 import axios from 'axios'
+import Header from '@/components/Header'
+
 export default {
   name: 'Profile',
+  components: {
+    Header
+  },
   data () {
     return {
       username: this.$store.state.user[0].username,
