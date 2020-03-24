@@ -48,7 +48,7 @@ export default {
   },
   methods: {
     login (e) {
-      axios.post('https://todo-app-backend-node.herokuapp.com//login', {
+      axios.post('https://todo-app-backend-node.herokuapp.com/login', {
         email: this.email,
         password: this.password
       }).then((res) => {
