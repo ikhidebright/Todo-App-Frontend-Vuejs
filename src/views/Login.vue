@@ -10,7 +10,7 @@
     <b-form-input type="password" v-model="password" placeholder="Password"></b-form-input>
     <br>
     <b-button type="submit" variant="" class="sub">Login</b-button>
-    <b-spinner style="width: 2rem; height: 2rem; color: #065566; float: right; margin-right: 6vmin" label="Small Spinner" type="grow"></b-spinner><!-- <b-link class="forgotpass link" to="/recover">Forgot password?</b-link> -->
+    <b-spinner v-if="this.clicked && !this.alert" style="width: 2rem; height: 2rem; color: #065566; float: right; margin-right: 6vmin" label="Small Spinner" type="grow"></b-spinner><!-- <b-link class="forgotpass link" to="/recover">Forgot password?</b-link> -->
     </b-form>
     <br>
    <!-- <h6>or</h6>

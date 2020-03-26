@@ -78,6 +78,11 @@ h3 {
   font-family: Fredoka One;
   }
 
+  h2 {
+  font-size: 1.5rem;
+  font-family: Righteous;
+}
+
 @media only screen and (min-width: 600px) {
   #nav {
   background-color: #065566;
