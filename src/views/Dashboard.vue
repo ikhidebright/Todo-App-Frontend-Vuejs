@@ -172,7 +172,7 @@ h4 {
 
 .fa-clipboard-list {
   color: rgb(223, 223, 223);
-  font-size: 10vmin;
+  font-size: 20vmin;
   width: 100%;
   margin: 0 auto;
   margin-top: 26vh;
@@ -186,7 +186,7 @@ box-shadow: 0 3px 6px 0 rgba(0,0,0,.25);
 border-radius: 50%;
 font-weight: bold;
 color: #810909;
-font-size: 18px;
+font-size: 30px;
 font-family: Squada One;
 width: 60px;
 position: fixed;
