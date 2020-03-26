@@ -4,7 +4,7 @@
       <div class="container">
       <div>
   <b-navbar toggleable="lg" type="dark" variant="">
-    <b-navbar-brand to="/">TIIDEdo</b-navbar-brand>
+    <b-navbar-brand to="/"><h2>TIIDEdo</h2></b-navbar-brand>
 
       <!-- Right aligned nav items -->
       <b-navbar-nav class="ml-auto">
@@ -43,12 +43,12 @@ accomplish more daily</p>
  <br>
     <b-container class="bv-example-row">
   <b-row>
-    <b-col sm>
+    <b-col sm class='mb-4 mt-4'>
       <i class="fas fa-bell"></i>
       <h6>Get Notified</h6>
       <p>Notification alerts on task</p>
     </b-col>
-    <b-col sm>
+    <b-col sm class='mb-4'>
       <i class="fas fa-clipboard-list"></i>
       <h6>Make Plans</h6>
       <p>Plan daily, weekly and monthly</p>
@@ -161,8 +161,13 @@ body {
 }
 
 .hero h1 {
-  font-size: 3rem;
+  font-size: 2rem;
   margin-top: 4min;
+  font-family: Righteous;
+}
+
+h2 {
+  font-size: 1.5rem;
   font-family: Righteous;
 }
 
