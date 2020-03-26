@@ -101,7 +101,7 @@ i {
   width: 65px;
   height: 65px;
   border-radius: 50%;
-  font-size: 4vmin;
+  font-size: 1.5rem;
   margin-bottom: 2vmin;
 }
 
