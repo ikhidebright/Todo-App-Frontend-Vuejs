@@ -14,7 +14,7 @@
     <b-form-input type="password" v-model="confirmpassword" placeholder="Confirm Password"></b-form-input>
     <br>
     <p :class="[this.username.length >= 5? 'ok' : 'no']">Username must be min of 5 letters</p>
-    <p :class="[this.password !== this.confirmpassword && this.password === '' && this.confirmpassword === ''? 'no' : 'ok']">Passwords do not match</p>
+    <p :class="[this.password !== this.confirmpassword || this.password === '' && this.confirmpassword === ''? 'no' : 'ok']">Passwords do not match</p>
     <p :class="[this.password.length >= 4? 'ok' : 'no']">Password must be min of 4</p>
     <b-button type="submit" variant="" class="sub" :disabled="this.password != this.confirmpassword || this.password == '' && this.confirmpassword == '' || this.username.length < 5 || this.password.length < 4">Register</b-button>
     <b-spinner v-if="this.clicked && !this.alert" style="width: 2rem; height: 2rem; color: #065566; float: right; margin-right: 6vmin" label="Small Spinner" type="grow"></b-spinner>
