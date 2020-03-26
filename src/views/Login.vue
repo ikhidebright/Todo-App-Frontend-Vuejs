@@ -10,7 +10,7 @@
     <b-form-input type="password" v-model="password" placeholder="Password"></b-form-input>
     <br>
     <b-button type="submit" variant="" class="sub">Login</b-button>
-    <b-spinner v-if="this.clicked && !this.alert" style="width: 2rem; height: 2rem; color: #065566; float: right; margin-right: 6vmin" label="Small Spinner" type="grow"></b-spinner><!-- <b-link class="forgotpass link" to="/recover">Forgot password?</b-link> -->
+    <b-spinner v-if="this.clicked && !this.alert || this.clicked && this.alert" style="width: 2rem; height: 2rem; color: #065566; float: right; margin-right: 6vmin" label="Small Spinner" type="grow"></b-spinner><!-- <b-link class="forgotpass link" to="/recover">Forgot password?</b-link> -->
     </b-form>
     <br>
    <!-- <h6>or</h6>
@@ -60,6 +60,7 @@ export default {
       })
         .then((res) => {
           this.$router.push('/dashboard')
+          this.clicked = false
         })
       e.preventDefault()
     },
@@ -151,7 +152,7 @@ float: right;
 }
 
 .login {
-  width: 95%;
+  width: 80%;
   margin: 0 auto;
   margin-top: 6%;
 }
