@@ -5,7 +5,7 @@
        <div class="container">
       <div>
   <b-navbar type="dark" variant="">
-    <b-navbar-brand to="/">TIIDEdo</b-navbar-brand>
+    <b-navbar-brand to="/"><h2>TIIDEdo</h2></b-navbar-brand>
 
       <!-- Right aligned nav items -->
       <b-navbar-nav class="ml-auto">
@@ -95,6 +95,11 @@ h3 {
   width: 30%;
   margin: 0 auto;
   margin-top: 6%;
+}
+
+h2 {
+  font-size: 1.5rem;
+  font-family: Righteous;
 }
 
 h3 {
