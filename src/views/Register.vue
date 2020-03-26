@@ -69,7 +69,7 @@ export default {
 }
 
 .register {
-  width: 80%;
+  width: 95%;
   margin: 0 auto;
   margin-top: 6%;
 }

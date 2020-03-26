@@ -9,17 +9,16 @@
     <br>
     <b-form-input type="password" v-model="password" placeholder="Password"></b-form-input>
     <br>
-    <b-button type="submit" variant="" class="sub">Login</b-button> <b-link class="forgotpass link" to="/recover">Forgot password?</b-link>
+    <b-button type="submit" variant="" class="sub">Login</b-button> <!-- <b-link class="forgotpass link" to="/recover">Forgot password?</b-link> -->
     </b-form>
     <br>
-    <h6>or</h6>
+   <!-- <h6>or</h6>
     <div class="google-btn" @click="google">
   <div class="google-icon-wrapper">
     <img class="google-icon" src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"/>
   </div>
   <p class="btn-text">Continue with google</p>
-</div>
-    <br>
+</div> -->
     Dont't have an account yet? <b-link to="/register" class="link">Create an account</b-link>
   </div>
    </div>
@@ -149,7 +148,7 @@ float: right;
 }
 
 .login {
-  width: 80%;
+  width: 95%;
   margin: 0 auto;
   margin-top: 6%;
 }
