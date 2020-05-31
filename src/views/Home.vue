@@ -77,8 +77,8 @@ export default {
     padding: 8px 16px;
     box-shadow: 0 2px 8px 0 rgba(0,0,0,.15);
     text-transform: uppercase;
-    background: #032a33;
-    border: 1px solid #032a33;
+    background: #1e6675;
+    border: 1px solid #1e6675;
     cursor: pointer;
     display: inline-block;
     font-family: Roboto,Helvetica,Arial,sans-serif;
@@ -102,8 +102,8 @@ export default {
     padding: 8px 16px;
     box-shadow: 0 2px 8px 0 rgba(0,0,0,.15);
     text-transform: uppercase;
-    background: #f68b1e;
-    border: 1px solid #f68b1e;
+    background: #377684;
+    border: 1px solid #377684; 
     cursor: pointer;
     display: inline-block;
     font-family: Roboto,Helvetica,Arial,sans-serif;
@@ -142,7 +142,7 @@ export default {
     vertical-align: middle;
     text-decoration: none;
     text-align: center;
-    color: #f68b1e
+    color: #032a33
   }
 
 .proceedToCheck1:hover {
@@ -152,8 +152,8 @@ export default {
     padding: 8px 16px;
     box-shadow: 0 2px 8px 0 rgba(0,0,0,.15);
     text-transform: uppercase;
-    background: #f68b1e;
-    border: 1px solid #f68b1e;
+    background: #e6eeef;
+    border: 1px solid #e6eeef;
     cursor: pointer;
     display: inline-block;
     font-family: Roboto,Helvetica,Arial,sans-serif;
