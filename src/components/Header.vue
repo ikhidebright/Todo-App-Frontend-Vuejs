@@ -16,10 +16,10 @@
 
         <b-nav-item-dropdown right v-if="$store.state.isUserLoggedIn">
           <template v-slot:button-content v-if="$store.state.isUserLoggedIn">
-            <em v-if="$store.state.isUserLoggedIn">{{ user }}</em>
+            <em v-if="$store.state.isUserLoggedIn">{{ user[0].username }}</em>
           </template>
           <b-dropdown-item to="/dashboard" v-if="$store.state.isUserLoggedIn">Dashboard</b-dropdown-item>
-          <b-dropdown-item to="/profile" v-if="$store.state.isUserLoggedIn">Edit Profile</b-dropdown-item>
+          <b-dropdown-item to="/profile" v-if="$store.state.isUserLoggedIn">Edit Account</b-dropdown-item>
           <b-dropdown-item to="/password" v-if="$store.state.isUserLoggedIn">Change Password</b-dropdown-item>
           <b-dropdown-item v-if="$store.state.isUserLoggedIn" @click="signout">Sign Out</b-dropdown-item>
         </b-nav-item-dropdown>
@@ -31,25 +31,32 @@
     </div>
 </div>
 </template>
+
 <script>
+import { mapActions, mapState } from 'vuex'
+
 export default {
   name: 'Header',
   data () {
     return {
       show: 'hide',
-      user: this.$store.state.user[0].username,
+      // user: this.$store.state.user[0].username,
       clicked: false
     }
   },
   methods: {
-    changeRout () {
-      this.$router.push('/')
-    },
+    ...mapActions(['logOut']),
     signout () {
-      this.$store.dispatch('setToken', null)
-      this.$store.dispatch('setUser', null)
-      this.changeRout()
+      this.logOut({
+        user: []
+      })
     }
+  },
+  computed: {
+    ...mapState({
+      user: 'user',
+      isUserLoggedIn: 'isUserLoggedIn'
+    })
   }
 }
 </script>

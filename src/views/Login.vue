@@ -3,14 +3,15 @@
   <div class="login">
     <h3>Login</h3>
     <br>
-    <b-alert show variant="success" v-if="this.alert"><b>{{ alert }}</b></b-alert>
-    <b-form @submit="login">
-    <b-form-input type="email" v-model="email" placeholder="Email"></b-form-input>
+    <b-form @submit.prevent="login">
+    <b-form-input type="email" v-model="user.email" placeholder="Email" required></b-form-input>
     <br>
-    <b-form-input type="password" v-model="password" placeholder="Password"></b-form-input>
+    <b-form-input type="password" v-model="user.password" placeholder="Password" required></b-form-input>
+    <b-link class="forgotpass link mb-4" to="/recover">Forgot password?</b-link>
+    <br>
     <br>
     <b-button type="submit" variant="" class="sub">Login</b-button>
-    <b-spinner v-if="this.clicked && !this.alert || this.clicked && this.alert" style="width: 2rem; height: 2rem; color: #065566; float: right; margin-right: 6vmin" label="Small Spinner" type="grow"></b-spinner><!-- <b-link class="forgotpass link" to="/recover">Forgot password?</b-link> -->
+    <b-spinner v-if="loading" style="width: 2rem; height: 2rem; color: #065566; float: right; margin-right: 6vmin" label="Small Spinner" type="grow"></b-spinner>
     </b-form>
     <br>
    <!-- <h6>or</h6>
@@ -20,53 +21,34 @@
   </div>
   <p class="btn-text">Continue with google</p>
 </div> -->
-    Dont't have an account yet? <b-link to="/register" class="link">Create an account</b-link>
+    Dont't have an account? <b-link to="/register" class="link">Register</b-link>
   </div>
    </div>
 </template>
 
 <script>
-import axios from 'axios'
+/* eslint-disable */
+import { mapState, mapActions } from 'vuex'
+
 export default {
   name: 'login',
   data () {
     return {
+      user: {
       email: '',
-      clicked: false,
       password: '',
-      alert: null
-    }
-  },
-  beforeRouteEnter (to, from, next) {
-    if (to.query.redirectFrom) {
-      next(vm => {
-        vm.alert =
-          'Sorry, you have to login first!'
-      })
-    } else {
-      next()
+      }
     }
   },
   methods: {
-    login (e) {
-      this.clicked = true
-      axios.post('https://todo-app-backend-node.herokuapp.com/login', {
-        email: this.email,
-        password: this.password
-      }).then((res) => {
-        this.$store.dispatch('setToken', res.data.token)
-        this.$store.dispatch('setUser', res.data.results)
-        this.alert = res.data.message
-      })
-        .then((res) => {
-          this.$router.push('/dashboard')
-          this.clicked = false
-        })
-      e.preventDefault()
-    },
-    google () {
+    ...mapActions(['loginUser']),
+    login () {
+    this.loginUser(this.user)
     }
-  }
+  },
+  computed: mapState({
+    loading: 'loading'
+  })
 }
 </script>
 <style lang="scss" scoped>$white: #fff;
@@ -152,12 +134,12 @@ float: right;
 }
 
 .login {
-  width: 80%;
+  width: 90%;
   margin: 0 auto;
-  margin-top: 6%;
+  margin-top: 25vh;
 }
 
-@media only screen and (min-width: 600px) {
+/*@media only screen and (min-width: 600px) {
   .login {
   width: 30%;
   margin: 0 auto;
@@ -176,5 +158,5 @@ p {
 .login h3 {
   font-family: Fredoka One;
   }
-}
+}*/
 </style>

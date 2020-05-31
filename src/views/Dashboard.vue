@@ -11,13 +11,9 @@
      <div>
   <b-modal id="modal-center" centered title="Add Todo" hide-header-close= true cancel-variant="danger" ok-title="Add">
      <template v-slot:modal-footer="{ ok, cancel }">
-      <!-- Emulate built in modal footer ok and cancel button actions -->
       <div class="mb-1">
      <b-button @click="showMsgBoxTwo" variant="" size="sm" class="sub2">Add</b-button>
     </div>
-      <!-- <b-button size="sm" variant="" class="sub" @click="addtodo">
-        Add
-      </b-button> -->
       <b-button size="sm" variant="danger" @click="cancel()">
         Cancel
       </b-button>
@@ -25,14 +21,16 @@
     <div>
   <b-form-textarea
     id="textarea-no-resize"
-    v-model="task"
+    v-model="todoData.task"
     placeholder="Enter a Task"
     rows="4"
     no-resize
   ></b-form-textarea>
-    <b-row class="my-1" v-for="type in types" :key="type">
+    <b-row class="my-1">
       <b-col sm="6">
-        <b-form-input :id="`type-${type}`" :type="type" v-model="time"></b-form-input>
+      <label for="date">Enter date/time</label>
+        <b-form-input id="date" type="date" v-model="todoData.date" class="mb-1"></b-form-input>
+        <b-form-input id="time" type="time" v-model="todoData.time"></b-form-input>
       </b-col>
     </b-row>
 </div>
@@ -45,9 +43,10 @@
 </template>
 
 <script>
-import axios from 'axios'
+/* eslint-disable */
 import Todoitem from '../components/Todoitem.vue'
 import Header from '@/components/Header'
+import { mapState, mapActions, mapGetters } from 'vuex'
 
 export default {
   name: 'Dashboard',
@@ -57,63 +56,25 @@ export default {
   },
   data () {
     return {
-      types: [
-        // 'date',
-        'time'
-      ],
-      user: this.$store.state.user[0].username,
-      todos: [],
+      todoData: {
       task: '',
-      alert: '',
-      time: '',
+      time: this.getTime(),
+      date: '',
       user_id: this.$store.state.user[0].id
+      },
     }
   },
-  methods: {
-    dateNow () {
-      const d = new Date()
-      const h = d.getHours()
-      const m = d.getMinutes()
-      this.time = h + ':' + m
-    },
-    delTodo (id) {
-      const result = confirm('Sure you want to delete?')
-      if (result) {
-        axios.get(`https://todo-app-backend-node.herokuapp.com/delete/${id}`, {
-          id: id
-        }).then((res) => {
-          this.load()
-        })
-      }
-    },
-    markTodo (todo) {
-      axios.put(`https://todo-app-backend-node.herokuapp.com/mark/${todo.id}`, {
-        completed: !todo.completed
-      }).then((res) => {
-        this.load()
-      })
-    },
-    load () {
-      axios.get(`https://todo-app-backend-node.herokuapp.com/todos/${this.user_id}`, {
-        user_id: this.user_id
-      }).then((res) => {
-        this.todos = res.data.result
-      })
-    },
+   methods: {
+    ...mapActions(['addUserTodo']),
+    ...mapGetters(['getTime', 'getDate']),
     sendTodo () {
-      if (this.task.length < 5) {
+      if (this.todoData.task.length < 5) {
         alert('Task must be more than 5 letter words')
       } else {
-        axios.post('https://todo-app-backend-node.herokuapp.com/todo', {
-          task: this.task,
-          user_id: this.user_id,
-          time: this.time
-        }).then((res) => {
-          this.alert = res.data.message
-          this.load()
-        })
-        this.task = ''
-        this.dateNow()
+          this.addUserTodo({
+            todoData: this.todoData,
+            userID: this.user[0].id
+          })
       }
     },
     showMsgBoxTwo () {
@@ -127,22 +88,20 @@ export default {
         class: '.sub2',
         centered: true
       })
-        .then(value => {
-          this.boxTwo = value
-          this.$bvModal.hide('modal-center')
-          // alert('hey')
-        })
-        .catch(err => {
-          throw err
-        })
+        // .then(value => {
+        //   this.boxTwo = value
+        //   this.$bvModal.hide('modal-center')
+        //   // alert('hey')
+        // })
+        // .catch(err => {
+        //   throw err
+        // })
     }
-  },
-  created () {
-    this.dateNow()
-    axios.get(`https://todo-app-backend-node.herokuapp.com/todos/${this.user_id}`, {
-      user_id: this.user_id
-    }).then((res) => {
-      this.todos = res.data.result
+   },
+  computed: {
+    ...mapState({
+      todos: 'userTodos',
+      user: 'user'
     })
   }
 }
@@ -222,7 +181,7 @@ router-link {
   color: white;
 }
 
-@media only screen and (min-width: 600px) {
+/*@media only screen and (min-width: 600px) {
 .sub {
   background-color: #065566;
   width: 50%;
@@ -262,24 +221,16 @@ height: 60px;
 float: right;
 }
 
-/* .add:focus {
-  outline: none;
-}
-
-.add:hover {
-background-color: #e1ecee;
-} */
-
 .main {
 width: 60%;
 margin: 0 auto;
-/* box-shadow: 0 0 6px gray; */
+ box-shadow: 0 0 6px gray; 
 height: 80vh;
 margin-top: 11vh;
 position: relative;
 bottom: 2vmin;
 /* border-top-left-radius: 5vmin;
-border-top-right-radius: 5vmin; */
+border-top-right-radius: 5vmin; 
 }
 
 #nav {
@@ -297,5 +248,5 @@ border-top-right-radius: 5vmin; */
 router-link {
   color: white;
 }
-}
+}*/
 </style>

@@ -6,22 +6,28 @@
     <br/>
     <h3>Change Password</h3>
     <br/>
-    <b-alert show variant="success" v-if="this.alert"><b>{{ alert }}</b></b-alert>
-    <b-form @submit="update">
-    <b-form-input type="text" v-model="password" placeholder="New Password"></b-form-input>
+    <b-form @submit.prevent="update">
+    <b-form-input type="password" v-model="user.cpassword" placeholder="Current Password" required></b-form-input>
     <br>
-    <b-form-input type="text" v-model="confirmpassword" placeholder="Confirm New Password"></b-form-input>
+    <b-form-input type="password" v-model="user.npassword" :state="npassword" placeholder="New Password" required></b-form-input>
+    <b-form-invalid-feedback :state="npassword">Password must be 8 - 20 characters long</b-form-invalid-feedback>
     <br>
-    <b-button type="submit" variant="" class="sub">Confirm Changes</b-button>
-    <b-spinner v-if="this.clicked && !this.alert" style="width: 2rem; height: 2rem; color: #065566; float: right; margin-right: 6vmin" label="Small Spinner" type="grow"></b-spinner>
+    <b-form-input type="password" v-model="confirmpassword" :state="checkconfirmpassword" placeholder="Confirm New Password" required></b-form-input>
+    <b-form-invalid-feedback :state="checkconfirmpassword">Passwords do not match</b-form-invalid-feedback>
+    <br>
+    <b-button type="submit" variant="" class="sub" :disabled="!formvalid">Submit</b-button>
+    <!--<b-spinner v-if="this.clicked && !this.alert" style="width: 2rem; height: 2rem; color: #065566; float: right; margin-right: 6vmin" label="Small Spinner" type="grow"></b-spinner>-->
     </b-form>
      </div>
    </div>
 </div>
 </template>
+
 <script>
-import axios from 'axios'
+/* eslint-disable */
 import Header from '@/components/Header'
+import { mapActions, mapState } from 'vuex'
+
 export default {
   name: 'Password',
   components: {
@@ -29,36 +35,38 @@ export default {
   },
   data () {
     return {
-      password: '',
-      confirmpassword: '',
-      alert: '',
-      show: 'hide',
-      user: this.$store.state.user[0].username,
-      clicked: false
+      user: {
+      cpassword: '',
+      npassword: ''
+      },
+      confirmpassword: ''
     }
   },
   methods: {
-    changeRout () {
-      this.$router.push('/')
-    },
-    signout () {
-      this.$store.dispatch('setToken', null)
-      this.$store.dispatch('setUser', null)
-      this.changeRout()
-    },
-    update (e) {
-      this.clicked = true
-      setTimeout(() => {
-        axios.post(`https://todo-app-backend-node.herokuapp.com/updatep/${this.$store.state.user[0].id}`, {
-          username: this.username,
-          email: this.email,
-          password: this.password
-        }).then((response) => {
-          this.alert = response.data.message
-        })
-      }, 10000)
-      e.preventDefault()
+    ...mapActions(['editUserPassword']),
+    update () {
+      this.editUserPassword({
+        userID: this.$store.state.user[0].id,
+        passwordData: {
+          currentPassword: this.user.cpassword,
+          newPassword: this.user.npassword
+        }
+      })
     }
+  },
+  computed: {
+    ...mapState({
+    user: 'user'
+  }),
+   npassword () {
+      return this.user.npassword.length > 7
+    },
+     checkconfirmpassword () {
+      return this.user.npassword == this.confirmpassword && this.user.npassword.length != ''
+    },
+    formvalid () {
+      return this.checkconfirmpassword && this.npassword
+    },
   }
 }
 </script>
@@ -86,7 +94,7 @@ h3 {
   font-family: Fredoka One;
   }
 
-@media only screen and (min-width: 600px) {
+/*@media only screen and (min-width: 600px) {
   #nav {
   background-color: #065566;
   height: 9vh;
@@ -108,5 +116,5 @@ h3 {
 h3 {
   font-family: Fredoka One;
   }
-}
+}*/
 </style>

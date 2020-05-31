@@ -4,25 +4,28 @@
 <div class="container">
   <div class="register">
     <br/>
-    <h3>Edit Profile</h3>
+    <h3>Edit Account Details</h3>
     <br/>
-    <b-alert show><b>Fill only Areas that you want to change</b></b-alert>
-    <b-alert show variant="success" v-if="this.alert"><b>{{ alert }}</b></b-alert>
-    <b-form @submit="update">
-    <b-form-input v-model="username" placeholder="New Username"></b-form-input>
+    <b-form @submit.prevent="update">
+    <b-form-input v-model="user.username" :state="checkusername" placeholder="New Username" required></b-form-input>
+    <b-form-invalid-feedback :state="checkusername">Username must be 5 characters long</b-form-invalid-feedback>
     <br>
-    <b-form-input type="email" v-model="email" placeholder="New Email"></b-form-input>
+    <b-form-input type="email" v-model="user.email" placeholder="New Email" required></b-form-input>
     <br>
-    <b-button type="submit" variant="" class="sub">Confirm Changes</b-button>
+    <b-form-input type="password" v-model="user.currentPassword" placeholder="Current Password" required></b-form-input>
+    <br>
+    <b-button type="submit" variant="" class="sub" :disabled="!formvalid">Confirm Changes</b-button>
     <b-spinner v-if="this.clicked && !this.alert" style="width: 2rem; height: 2rem; color: #065566; float: right; margin-right: 6vmin" label="Small Spinner" type="grow"></b-spinner>
     </b-form>
      </div>
    </div>
 </div>
 </template>
+
 <script>
-import axios from 'axios'
+/* eslint-disable */
 import Header from '@/components/Header'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'Profile',
@@ -31,40 +34,31 @@ export default {
   },
   data () {
     return {
+      user: {
       username: this.$store.state.user[0].username,
       email: this.$store.state.user[0].email,
-      password: this.$store.state.user[0].password,
-      confirmpassword: '',
-      alert: '',
-      show: 'hide',
-      user: this.$store.state.user[0].username,
-      clicked: false
+      currentPassword: ''
+      }
     }
   },
   methods: {
-    changeRout () {
-      this.$router.push('/')
-    },
-    signout () {
-      this.$store.dispatch('setToken', null)
-      this.$store.dispatch('setUser', null)
-      this.changeRout()
-    },
-    update (e) {
-      this.clicked = true
-      setTimeout(() => {
-        axios.post(`https://todo-app-backend-node.herokuapp.com/update/${this.$store.state.user[0].id}`, {
-          username: this.username,
-          email: this.email,
-          password: this.password
-        }).then((response) => {
-          this.alert = response.data.message
-        })
-      }, 10000)
-      e.preventDefault()
+    ...mapActions(['editUserProfile']),
+    update () {
+      this.editUserProfile({
+        userID: this.$store.state.user[0].id,
+        profileData: this.user
+      })
     }
+  },
+  computed: {
+     checkusername () {
+      return this.user.username.length === 5
+    },
+    formvalid () {
+      return this.checkusername && this.user.currentPassword.length > 7 && !this.user.email == ''
+    },
   }
-}
+  }
 </script>
 <style scoped>
 .sub {
@@ -90,7 +84,7 @@ h3 {
   font-family: Fredoka One;
   }
 
-@media only screen and (min-width: 600px) {
+/*@media only screen and (min-width: 600px) {
   #nav {
   background-color: #065566;
   height: 9vh;
@@ -111,5 +105,5 @@ h3 {
   margin: 0 auto;
   margin-top: 6%;
 }
-}
+}*/
 </style>

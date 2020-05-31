@@ -99,6 +99,10 @@ const routes = [
           }
         })
       } else {
+        store.dispatch({
+          type: 'getUserTodo',
+          userID: store.state.user[0].id
+        })
         next()
       }
     }
